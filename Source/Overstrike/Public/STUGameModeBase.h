@@ -13,5 +13,8 @@ UCLASS()
 class OVERSTRIKE_API ASTUGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+
+public:
+	ASTUGameModeBase();
 	
 };

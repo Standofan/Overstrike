@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "STUBaseCharacter.generated.h"
 
+class UCameraComponent;
+
 UCLASS()
 class OVERSTRIKE_API ASTUBaseCharacter : public ACharacter
 {
@@ -16,6 +18,8 @@ public:
 	ASTUBaseCharacter();
 
 protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	UCameraComponent* CameraComponent;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
