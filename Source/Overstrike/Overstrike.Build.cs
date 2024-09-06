@@ -12,7 +12,7 @@ public class Overstrike : ModuleRules
 
         PrivateDependencyModuleNames.AddRange(new string[] { });
 
-        PublicIncludePaths.AddRange(new string[] { "Overstrike/Public/Player" });
+        PublicIncludePaths.AddRange(new string[] { "Overstrike/Public/Player", "Overstrike/Public/Player/Components" });
 
         // Uncomment if you are using Slate UI
         // PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
