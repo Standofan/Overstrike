@@ -87,3 +87,11 @@ bool ASTUBaseCharacter::isRunning() const
 {
 	return wantsToRun && isMovingForward && !GetVelocity().IsZero();
 }
+
+float ASTUBaseCharacter::GetMovementDirection() const
+{
+	const auto VelocityNormal = GetVelocity().GetSafeNormal();
+	const auto AngleBetween = FMath::Acos(FVector::DotProduct(GetActorForwardVector(), VelocityNormal));
+	const auto CrossProduct = FVector::CrossProduct(GetActorForwardVector(), VelocityNormal);
+	return FMath::RadiansToDegrees(AngleBetween) * FMath::Sign(CrossProduct.Z);
+}
