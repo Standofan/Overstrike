@@ -4,6 +4,7 @@
 #include "Components/STUHealthComponent.h"
 #include "GameFramework/Actor.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogHealthComponent, All, All)
 
 USTUHealthComponent::USTUHealthComponent()
 {
@@ -27,4 +28,5 @@ void USTUHealthComponent::OnTakeAnyDamage(
 	AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
 {
 	Health -= Damage;
+	UE_LOG(LogHealthComponent, Display, TEXT("DAMAGE: % f"), Damage);
 }
