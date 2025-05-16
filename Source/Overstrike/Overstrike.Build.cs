@@ -8,11 +8,25 @@ public class Overstrike : ModuleRules
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" });
+        PublicDependencyModuleNames.AddRange(new string[] 
+        { 
+            "Core", 
+            "CoreUObject", 
+            "Engine", 
+            "InputCore", 
+            "EnhancedInput"
+        });
 
         PrivateDependencyModuleNames.AddRange(new string[] { });
 
-        PublicIncludePaths.AddRange(new string[] { "Overstrike/Public/Player", "Overstrike/Public/Player/Components", "Overstrike/Public/Dev" });
+        PublicIncludePaths.AddRange(new string[] 
+        { 
+            "Overstrike/Public/Player", 
+            "Overstrike/Public/Player/Components", 
+            "Overstrike/Public/Dev",
+            "Overstrike/Public/Weapon",
+            "Overstrike/Public/UI"
+        });
 
         // Uncomment if you are using Slate UI
         // PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
