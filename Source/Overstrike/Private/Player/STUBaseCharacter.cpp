@@ -66,8 +66,8 @@ void ASTUBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &ASTUBaseCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ASTUBaseCharacter::MoveRight);
-	PlayerInputComponent->BindAxis("LookUp", this, &ASTUBaseCharacter::LookUp);
-	PlayerInputComponent->BindAxis("TurnAround", this, &ASTUBaseCharacter::TurnAround);
+	PlayerInputComponent->BindAxis("LookUp", this, &ASTUBaseCharacter::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("TurnAround", this, &ASTUBaseCharacter::AddControllerYawInput);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASTUBaseCharacter::Jump);
 	PlayerInputComponent->BindAction("Run", IE_Pressed, this, &ASTUBaseCharacter::OnStartRunning);
 	PlayerInputComponent->BindAction("Run", IE_Released, this, &ASTUBaseCharacter::OnStopRunning);
@@ -77,22 +77,14 @@ void ASTUBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 void ASTUBaseCharacter::MoveForward(float Amount)
 {
 	isMovingForward = Amount > 0.0f;
+	if (Amount == 0.0f) return;
 	AddMovementInput(GetActorForwardVector(), Amount);
 }
 
 void ASTUBaseCharacter::MoveRight(float Amount)
 {
+	if (Amount == 0.0f) return;
 	AddMovementInput(GetActorRightVector(), Amount);
-}
-
-void ASTUBaseCharacter::LookUp(float Amount)
-{
-	AddControllerPitchInput(Amount);
-}
-
-void ASTUBaseCharacter::TurnAround(float Amount)
-{
-	AddControllerYawInput(Amount);
 }
 
 void ASTUBaseCharacter::OnStartRunning()
@@ -112,10 +104,12 @@ bool ASTUBaseCharacter::isRunning() const
 
 float ASTUBaseCharacter::GetMovementDirection() const
 {
+	if (GetVelocity().IsZero()) return 0.0f;
 	const auto VelocityNormal = GetVelocity().GetSafeNormal();
 	const auto AngleBetween = FMath::Acos(FVector::DotProduct(GetActorForwardVector(), VelocityNormal));
 	const auto CrossProduct = FVector::CrossProduct(GetActorForwardVector(), VelocityNormal);
-	return FMath::RadiansToDegrees(AngleBetween) * FMath::Sign(CrossProduct.Z);
+	const auto Degrees = FMath::RadiansToDegrees(AngleBetween);
+	return CrossProduct.IsZero() ? Degrees : Degrees * FMath::Sign(CrossProduct.Z);
 }
 
 void ASTUBaseCharacter::OnDeath() 
