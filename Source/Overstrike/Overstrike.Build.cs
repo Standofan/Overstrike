@@ -25,7 +25,8 @@ public class Overstrike : ModuleRules
             "Overstrike/Public/Player/Components", 
             "Overstrike/Public/Dev",
             "Overstrike/Public/Weapon",
-            "Overstrike/Public/UI"
+            "Overstrike/Public/UI",
+            "Overstrike/Public/Animations"
         });
 
         // Uncomment if you are using Slate UI

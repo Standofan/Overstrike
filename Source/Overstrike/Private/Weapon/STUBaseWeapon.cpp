@@ -6,7 +6,6 @@
 #include "DrawDebugHelpers.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/Controller.h"
-#include "Engine/DamageEvents.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogBaseWeapon, All, All);
 
@@ -24,34 +23,20 @@ void ASTUBaseWeapon::BeginPlay()
 	Super::BeginPlay();
 	
 	check(WeaponMesh);
+	CurrentAmmo = DefaultAmmo;
 }
 
-void ASTUBaseWeapon::Fire()
+void ASTUBaseWeapon::StartFire()
 {
-	MakeShot();
+
+}
+
+void ASTUBaseWeapon::StopFire()
+{
 }
 
 void ASTUBaseWeapon::MakeShot()
 {
-	if (!GetWorld()) return;
-
-	FVector TraceStart, TraceEnd;
-	if (!GetTraceData(TraceStart, TraceEnd)) return;
-
-	FHitResult HitResult;
-	MakeHit(HitResult, TraceStart, TraceEnd);
-
-	if (HitResult.bBlockingHit)
-	{
-		MakeDamage(HitResult);
-		DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), HitResult.ImpactPoint, FColor::Red, false, 3.0f, 0, 3.0f);
-		DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 24, FColor::Red, false, 5.0f);
-
-	}
-	else
-	{
-		DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), TraceEnd, FColor::Red, false, 3.0f, 0, 3.0f);
-	}
 
 }
 
@@ -99,10 +84,40 @@ void ASTUBaseWeapon::MakeHit(FHitResult& HitResult, const FVector& TraceStart, c
 	
 }
 
-void ASTUBaseWeapon::MakeDamage(const FHitResult& HitResult)
+void ASTUBaseWeapon::DecreaseAmmo()
 {
-	const auto DamagedActor = HitResult.GetActor();
-	if (!DamagedActor) return;
+	CurrentAmmo.Bullets--;
+	LogAmmo();
 
-	DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetPlayerController(), this);
+	if (IsClipEmpty() && !IsAmmoEmpty())
+	{
+		ChangeClip();
+	}
+}
+
+bool ASTUBaseWeapon::IsAmmoEmpty() const
+{
+	return !CurrentAmmo.Infinite && CurrentAmmo.Clips == 0 && IsClipEmpty();
+}
+
+bool ASTUBaseWeapon::IsClipEmpty() const
+{
+	return CurrentAmmo.Bullets == 0;
+}
+
+void ASTUBaseWeapon::ChangeClip()
+{
+	CurrentAmmo.Bullets = DefaultAmmo.Bullets;
+	if (!CurrentAmmo.Infinite)
+	{
+		CurrentAmmo.Clips--;
+	}
+	UE_LOG(LogBaseWeapon, Display, TEXT("---------------CHANGE_CLIP---------------"));
+}
+
+void ASTUBaseWeapon::LogAmmo()
+{
+	FString AmmoInfo = "Ammo: " + FString::FromInt(CurrentAmmo.Bullets) + " / "; 
+	AmmoInfo += CurrentAmmo.Infinite ? "Infinite" : FString::FromInt(CurrentAmmo.Clips);
+	UE_LOG(LogBaseWeapon, Display, TEXT("%s"), *AmmoInfo);
 }
