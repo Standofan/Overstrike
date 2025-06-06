@@ -14,7 +14,9 @@ public class Overstrike : ModuleRules
             "CoreUObject", 
             "Engine", 
             "InputCore", 
-            "EnhancedInput"
+            "EnhancedInput",
+            "Niagara",
+            "PhysicsCore"
         });
 
         PrivateDependencyModuleNames.AddRange(new string[] { });
@@ -27,7 +29,8 @@ public class Overstrike : ModuleRules
             "Overstrike/Public/Weapon",
             "Overstrike/Public/UI",
             "Overstrike/Public/Animations",
-            "Overstrike/Public/Pickups"
+            "Overstrike/Public/Pickups",
+            "Overstrike/Public/Weapon/Components",
         });
 
         // Uncomment if you are using Slate UI

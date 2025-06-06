@@ -8,6 +8,7 @@
 
 class USphereComponent;
 class UProjectileMovementComponent;
+class USTUWeaponFXComponent;
 
 UCLASS()
 class OVERSTRIKE_API ASTUProjectile : public AActor
@@ -28,6 +29,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Weapon")
 	UProjectileMovementComponent* MovementComponent;
+
+	UPROPERTY(VisibleAnywhere, Category = "VFX")
+	USTUWeaponFXComponent* WeaponFXComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
 	float DamageRadius = 200.0f;
